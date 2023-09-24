@@ -1,0 +1,56 @@
+/**
+ * Remove default margin.
+ */
+body {
+  margin: 0;
+  background-color: #c3dbbc;
+  background: linear-gradient(to bottom, #c3ffbc, #40a040);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: #004030;
+  font-family: "Arial", sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+h2 {
+  text-align: center;
+}
+
+h3 {
+  text-align: center;
+}
+
+ul {
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+p {
+  text-align: center;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+
+
+#HeaderHome {
+	float: left;
+	width: 23%;
+	margin-left: 1%;
+	margin-right: 1%;
+	text-align: center;
+}
+
+.HeaderSection {
+	float: right;
+	
+	width: 23%;
+	margin-left: 1%;
+	margin-right: 1%;
+	
+	text-align: center;
+	background-color: #ff80d0;
+	background: linear-gradient(to bottom, #ffa0e0, #e060a0);
+}
