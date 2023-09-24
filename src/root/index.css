@@ -40,7 +40,12 @@ p {
 	width: 23%;
 	margin-left: 1%;
 	margin-right: 1%;
+	margin-bottom: 10px;
+	
 	text-align: center;
+	
+	background-color: #d080ff;
+	background: linear-gradient(to bottom, #f0a0ff, #b060e0);
 }
 
 .HeaderSection {
@@ -49,8 +54,10 @@ p {
 	width: 23%;
 	margin-left: 1%;
 	margin-right: 1%;
+	margin-bottom: 10px;
 	
 	text-align: center;
-	background-color: #ff80d0;
-	background: linear-gradient(to bottom, #ffa0e0, #e060a0);
+
+	background-color: #ffa0e0;
+	background: linear-gradient(to bottom, #ffa0f0, #f080d0);
 }
