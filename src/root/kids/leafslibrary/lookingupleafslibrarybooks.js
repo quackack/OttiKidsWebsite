@@ -125,22 +125,56 @@ function reDraw(gameState) {
 	}
 }
 
+function writeWithWordWrap(text, color, textHeight, startX, startY, maxWidth) {
+	ctx.fillStyle = color;
+	ctx.font = textHeight + "px Arial";
+
+	var words = text.split(" ");
+    var currentLine = words[0];
+	var currentLineStartY = startY;
+
+	for (var i = 1; i < words.length; i++) {
+		var word = words[i]
+		var width = ctx.measureText(currentLine + " " + word).width;
+		if (width > maxWidth) {
+			ctx.fillText(currentLine, startX, currentLineStartY);
+			currentLine = word;
+			currentLineStartY += textHeight;
+		} else {
+			currentLine += " " + word;
+		}
+	}
+	ctx.fillText(currentLine, startX, currentLineStartY);
+}
+
 function writeWinScreen(gameState) {
 	ctx.fillStyle = "pink";
 	ctx.fillRect(0, 0, canvas.width, canvas.height);
 	writeBooks(gameState);
 	
-	ctx.fillStyle = "white";
-	ctx.font = "30px Arial";
-	ctx.fillText("You found \"" + gameState.wantedBook + "\"!", gameState.settings.bookAreaStartX + gameState.settings.bookAreaWidth, 50 );
+	writeWithWordWrap("You found \"" + gameState.wantedBook + "\"!",
+	"white",
+	30,
+	gameState.settings.bookAreaStartX + gameState.settings.bookAreaWidth,
+	30,
+	gameState.settings.canvasWidth - gameState.settings.bookAreaStartX - gameState.settings.bookAreaWidth);
 }
 
 function writeDesiredTitle(gameState) {
-	ctx.fillStyle = "black";
-	ctx.font = "25px Arial";
-	ctx.fillText("Bouquet Wants: \"" + gameState.wantedBook + "\"", gameState.settings.bookAreaStartX + gameState.settings.bookAreaWidth, 50 );
+	writeWithWordWrap("Bouquet Wants: \"" + gameState.wantedBook + "\"",
+	"black",
+	25,
+	gameState.settings.bookAreaStartX + gameState.settings.bookAreaWidth,
+	25,
+	gameState.settings.canvasWidth - gameState.settings.bookAreaStartX - gameState.settings.bookAreaWidth);
+
 	if (gameState.lastSelectedBook != -1) {
-		ctx.fillText("That Book Is: \"" + gameState.lastSelectedBook.title + "\"", gameState.settings.bookAreaStartX + gameState.settings.bookAreaWidth, 100 ); 
+		writeWithWordWrap("That Book Is: \"" + gameState.lastSelectedBook.title + "\"",
+		"black",
+		25,
+		gameState.settings.bookAreaStartX + gameState.settings.bookAreaWidth,
+		100,
+		gameState.settings.canvasWidth - gameState.settings.bookAreaStartX - gameState.settings.bookAreaWidth);
 	}
 }
 
