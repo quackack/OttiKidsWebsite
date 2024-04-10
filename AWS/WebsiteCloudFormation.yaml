@@ -4,12 +4,19 @@ Parameters:
   WebAppS3BucketName:
     Description: Web app S3 bucket name
     Type: String
-  Domain1:
-    Description: Web app S3 bucket name
+  NewEmailDomain:
+    Description: The domain of the new email - eg, stemforestbooks.com
     Type: String
-  Domain2:
-    Description: Another Domain that should redirect to the main website.
+  NewEmailAddress:
+    Description: The email address we are creating - eg, info@stemforestbooks.com
     Type: String
+  ForwardToEmailAddress:
+    Description: The email address we want to forward to - eg, stemforestbooks@gmail.com
+    Type: String
+  EmailForwardS3Name:
+    Description: The bucket to store emails in
+    Type: String
+  
 Resources:
     ## Specifying the S3 Bucket for Web App
     WebAppS3Bucket:
@@ -38,7 +45,6 @@ Resources:
                     - Ref: S3OriginAccessIdentity
               Action:
               - s3:GetObject
-              - s3:ListObjects
               Resource:
                 Fn::Join:
                 - ''
@@ -77,8 +83,9 @@ Resources:
           Enabled: 'true'
           ## Uncomment the following section in case you are using a custom domain
           Aliases:
-          - Ref: Domain1
-          - Ref: Domain2
+          - ottibooks.com
+          - leafslibrary.com
+          - stemforestbooks.com
           DefaultRootObject: index.html
           ## Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
           ## The only exception are files that actually exist e.h. app.js, reset.css
@@ -108,7 +115,7 @@ Resources:
             ViewerProtocolPolicy: redirect-to-https
           ## The certificate to use when viewers use HTTPS to request objects.
           ViewerCertificate:
-            AcmCertificateArn: 'arn:aws:acm:us-east-1:987028759254:certificate/ee1bf5ec-0564-46df-9428-aa1f9efd4ded'
+            AcmCertificateArn: 'arn:aws:acm:us-east-1:987028759254:certificate/00d068c7-b6b8-4f26-8a82-1936284cca9a'
             MinimumProtocolVersion: 'TLSv1.2_2021'
             SslSupportMethod: 'sni-only'
           ## Uncomment the following section in case you want to enable logging for CloudFront requests
@@ -116,6 +123,161 @@ Resources:
           #   IncludeCookies: 'false'
           #   Bucket: mylogs.s3.amazonaws.com
           #   Prefix: myprefix
+    
+    ## This section is to set up our email service.
+    # Email ID of the new email address
+    EmailSES:
+      Type: AWS::SES::EmailIdentity
+      Properties:
+        EmailIdentity: !Ref NewEmailDomain
+        DkimSigningAttributes: 
+          NextSigningKeyLength: RSA_2048_BIT
+    # Makes the domain name route emails to the appropriate simple email service address
+    WebsiteDNS:
+     Type: AWS::Route53::RecordSetGroup
+     Properties:
+       HostedZoneId: Z0523531R8342LRY05CJ
+       RecordSets:
+         - Name:
+             Fn::GetAtt: [ EmailSES, DkimDNSTokenName1 ]
+           Type: CNAME
+           TTL: 600
+           ResourceRecords:
+             - Fn::GetAtt: [ EmailSES, DkimDNSTokenValue1 ]
+         - Name:
+             Fn::GetAtt: [ EmailSES, DkimDNSTokenName2 ]
+           Type: CNAME
+           TTL: 600
+           ResourceRecords:
+             - Fn::GetAtt: [ EmailSES, DkimDNSTokenValue2 ]
+         - Name:
+             Fn::GetAtt: [ EmailSES, DkimDNSTokenName3 ]
+           Type: CNAME
+           TTL: 600
+           ResourceRecords:
+             - Fn::GetAtt: [ EmailSES, DkimDNSTokenValue3 ]
+         - Name: stemforestbooks.com
+           Type: MX
+           TTL: 600
+           ResourceRecords:
+             - '10 inbound-smtp.us-east-2.amazonaws.com'  # this will depend on your reg
+    
+    # The notification service that will forward emails to the external email
+    EmailSNS:
+     Type: AWS::SNS::Topic
+     Properties:
+       Subscription:
+         - Endpoint: !Ref ForwardToEmailAddress # the email to receive the notifications
+           Protocol: email
+       TopicName: 'my-sns-topic-name'
+
+    # A rule set that will hold instructions on what to do with an email sent to the simple email service
+    EmailRuleSet:
+     Type: AWS::SES::ReceiptRuleSet
+     Properties:
+       RuleSetName: 'my-ruleset-name'
+    # The actual rules for the rule set
+    EmailRule:
+     Type: AWS::SES::ReceiptRule
+     Properties:
+       Rule:
+         Actions:
+           - SNSAction:
+               TopicArn:
+                 Ref: EmailSNS  # name of your SNS resource
+         Enabled: true
+         Name: 'your-rule-name'
+         ScanEnabled: true
+         Recipients:
+           - !Ref NewEmailAddress
+       RuleSetName:
+         Ref: EmailRuleSet  # name of your rule set resource
+
+    # The email forwarding lambda
+    ## Specifying the S3 Bucket for Email
+#    EmailS3Bucket:
+#      Type: AWS::S3::Bucket
+#      Properties:
+#        BucketName: 
+#          Ref: EmailForwardS3Name
+    ## Specifying the policies to make sure all files inside the Bucket are avaialble to CloudFront
+#    EmailS3BucketPolicy:
+#      Type: AWS::S3::BucketPolicy
+#      Properties:
+#        Bucket:
+#          Ref: EmailForwardS3Name
+#        PolicyDocument:
+#          Statement:
+#            - Sid: AllowSESPuts
+#              Effect: Allow
+#              Principal:
+#                Service: ses.amazonaws.com
+#              Action:
+#              - s3:PutObject
+#              Resource:
+#                Fn::Join:
+#                - ''
+#                - - 'arn:aws:s3:::'
+#                  - Ref: EmailS3Bucket
+#                  - "/*"
+#              Condition: {
+#                StringEquals:
+#                    aws:Referer: !Ref "AWS::AccountId"
+#  LambdaS3ForwardRole:
+#    Type: AWS::IAM::Role
+#    Properties:
+#      AssumeRolePolicyDocument:
+#        Version: '2012-10-17'
+#        Statement:
+#        - Effect: Allow
+#          Principal: {Service: [lambda.amazonaws.com]}
+#          Action: ['sts:AssumeRole']
+#      Path: /
+#      ManagedPolicyArns:
+#      - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+#      Policies:
+#      - PolicyName: S3Policy
+#        PolicyDocument:
+#          Version: '2012-10-17'
+#          Statement:
+#            - Effect: Allow
+#              Action:
+#                - 's3:GetObject'
+#                - 'ses:SendRawEmail
+#              Resource:
+#               - !Sub "arn:aws:s3:::${EmailForwardS3Name}/*"
+#               - !Sub "arn:aws:ses:us-east-2:${AWS::AccountId}:identity/*"
+#  EmailForwardLambdaFunction:
+#    Type: AWS::Lambda::Function
+#    Properties:
+#      Code:
+#        ZipFile: >
+#          "use strict";
+#          var AWS = require('aws-sdk');
+#          console.log("AWS Lambda SES Forwarder // @arithmetric // Version 5.1.0");
+#          // Based on https://github.com/arithmetric/aws-lambda-ses-forwarder/blob/master/index.js
+#          exports.handler = function(event, context, callback, overrides) {
+#            //Check if the event is invalid
+#            if (!event ||
+#                  !event.hasOwnProperty('Records') ||
+#                  event.Records.length !== 1 ||
+#                  !event.Records[0].hasOwnProperty('eventSource') ||
+#                  event.Records[0].eventSource !== 'aws:ses' ||
+#                  event.Records[0].eventVersion !== '1.0') {
+#              console.log("SNS of wrong format.");
+#              return;
+#            }
+#            //Read the email.
+#            var email = event.Records[0].ses.mail;
+#            var originalRecipiants = event.Records[0].ses.receipt.recipients;  
+#            console.log("Got email and recipiants.");
+#            var recipiant = "stemforestbooks@gmail.com";
+#          };
+#      Handler: index.handler
+#      Role:
+#        Fn::GetAtt: [ LambdaS3ForwardRole , "Arn" ]
+#      Runtime: nodejs16.x
+#      Timeout: 60
 
   ## In order to print out the hosted domain via `serverless info` we need to define the DomainName output for CloudFormation
 Outputs:
