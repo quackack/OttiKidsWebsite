@@ -1,6 +1,6 @@
 {
 	"Category": "Character",
-	"PageName": "Ututu",
+	"PageName": "ututu",
 	"Name": "Ututu",
 	"ShortDescription": "An outgoing, dancing Will-o'-Wisp.",
 	"Books": [],
@@ -22,6 +22,6 @@
 	"Hobbies": ["Dancing", "Arguing", "Guiding"],
 	"Expertise": [],
 	"OCEAN": {"O": 7, "C": 2, "E": 7, "A": 1, "N": 3},
-	"Friends": ["Ahia", "Leaf", "Bouquet"],
+	"Friends": ["ahia", "leaf", "bouquet"],
 	"Biography": ""
 }

@@ -1,10 +1,10 @@
 {
 	"Category": "Book",
-	"PageName": "LeafsLibrary",
+	"PageName": "leafslibrary",
 	"Name": "Leaf's Library",
 	"ShortDescription": "Baby's First Binary Search.",
-	"Characters": ["Leaf", "Airon", "Ahia", "Bouquet", "Kris"],
+	"Characters": ["leaf", "airon", "ahia", "bouquet", "kris"],
 	"Summary": "In Leaf's Library, Leaf learns binary search to find books for her friends faster.",
-	"Places": ["Library"],
+	"Places": ["library"],
 	"Biography": ""
 }

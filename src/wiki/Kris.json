@@ -1,9 +1,9 @@
 {
 	"Category": "Character",
-	"PageName": "Kris",
+	"PageName": "kris",
 	"Name": "Kris",
 	"ShortDescription": "A quantum fairy.",
-	"Books": ["LeafsLibrary"],
+	"Books": ["leafslibrary"],
 	"Appearance": {
 		"Species": "Fairy",
 		"Sex": "|+>",
@@ -19,6 +19,6 @@
 	"Hobbies": [],
 	"Expertise": ["Quantum Mechanics"],
 	"OCEAN": {"O": 3, "C": 4, "E": 2, "A": 6, "N": 6},
-	"Friends": ["Leaf"],
+	"Friends": ["leaf"],
 	"Biography": "<p>Kris often describes themselves as nonbinary, but is technically the |+&gt; sex. This is a certain superposition of both male and female, and is quite common among quantum fairies.</p>"
 }

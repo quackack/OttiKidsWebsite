@@ -1,10 +1,10 @@
 {
 	"Category": "Place",
-	"PageName": "Library",
+	"PageName": "library",
 	"Name": "Library",
 	"ShortDescription": "The Stem Forest Library.",
-	"Books": ["LeafsLibrary"],
-	"Characters": ["Leaf", "Airon", "Ahia", "Bouquet", "Kris"],
+	"Books": ["leafslibrary"],
+	"Characters": ["leaf", "airon", "ahia", "bouquet", "kris"],
 	"Summary": "A Library Deep in the Stem Forest in the trunk of an old tree.",
 	"Biography": ""
 }

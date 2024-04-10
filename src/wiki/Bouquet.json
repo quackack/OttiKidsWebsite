@@ -1,9 +1,9 @@
 {
 	"Category": "Character",
-	"PageName": "Bouquet",
+	"PageName": "bouquet",
 	"Name": "Bouquet",
 	"ShortDescription": "A ballerina, garden fairy.",
-	"Books": ["LeafsLibrary"],
+	"Books": ["leafslibrary"],
 	"Appearance": {
 		"Species": "Fairy",
 		"Sex": "Female",
@@ -19,6 +19,6 @@
 	"Hobbies": ["Dancing", "Fashion", "Flowers"],
 	"Expertise": ["Kinematics", "Physics"],
 	"OCEAN": {"O": 5, "C": 9, "E": 2, "A": 6, "N": 7},
-	"Friends": ["Leaf", "Airon", "Ahia", "Ututu"],
+	"Friends": ["leaf", "airon", "ahia", "ututu"],
 	"Biography": ""
 }

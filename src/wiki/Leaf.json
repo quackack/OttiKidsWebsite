@@ -1,9 +1,9 @@
 {
 	"Category": "Character",
-	"PageName": "Leaf",
+	"PageName": "leaf",
 	"Name": "Leaf",
 	"ShortDescription": "A living plant librarian.",
-	"Books": ["LeafsLibrary"],
+	"Books": ["leafslibrary"],
 	"Appearance": {
 		"Species": "Plant Girl",
 		"Sex": "Female",
@@ -16,10 +16,10 @@
 	"Powers": [{"PowerName": "Plant Control", "Description": "Allows Leaf to manipulate plants. She can tell plants to bend with her mind and they will do it."},
 				{"PowerName": "Wind Friend", "Description": "Leaf is friends with the wind. When she wishes hard for a breeze, the wind will blow. If she holds a large leaf in the air, the wind will blow her where she needs to go."} ],
 	"Jobs": ["Librarian"],
-	"Places": ["Library"],
+	"Places": ["library"],
 	"Hobbies": ["Reading", "Helping People", "Puzzles", "Strategy Games", "Walks On The Beach", "Canoeing"],
 	"Expertise": ["Data Structures", "Graph Algorithms"],
 	"OCEAN": {"O": 7, "C": 9, "E": 3, "A": 8, "N": 6},
-	"Friends": ["Ahia", "Airon", "Bouquet", "Kris", "Ututu"],
+	"Friends": ["ahia", "airon", "bouquet", "kris", "ututu"],
 	"Biography": "<p>Leaf is the librarian of the stem forest library. She helps people find books in the library and helps people organize. She organizes all sorts of events at the library too.</p>"
 }

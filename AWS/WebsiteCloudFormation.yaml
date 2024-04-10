@@ -13,9 +13,6 @@ Parameters:
   ForwardToEmailAddress:
     Description: The email address we want to forward to - eg, stemforestbooks@gmail.com
     Type: String
-  EmailForwardS3Name:
-    Description: The bucket to store emails in
-    Type: String
   
 Resources:
     ## Specifying the S3 Bucket for Web App
@@ -125,13 +122,18 @@ Resources:
           #   Prefix: myprefix
     
     ## This section is to set up our email service.
-    # Email ID of the new email address
+    # Email ID of the new email domain
     EmailSES:
       Type: AWS::SES::EmailIdentity
       Properties:
         EmailIdentity: !Ref NewEmailDomain
         DkimSigningAttributes: 
           NextSigningKeyLength: RSA_2048_BIT
+    # ID of the email to forward to.
+    ForwardToEmailSES:
+      Type: AWS::SES::EmailIdentity
+      Properties:
+        EmailIdentity: !Ref ForwardToEmailAddress
     # Makes the domain name route emails to the appropriate simple email service address
     WebsiteDNS:
      Type: AWS::Route53::RecordSetGroup
@@ -162,20 +164,21 @@ Resources:
            ResourceRecords:
              - '10 inbound-smtp.us-east-2.amazonaws.com'  # this will depend on your reg
     
-    # The notification service that will forward emails to the external email
-    EmailSNS:
+    # The notification that will forward emails to a lambda
+    EmailToLambdaSNS:
      Type: AWS::SNS::Topic
      Properties:
        Subscription:
-         - Endpoint: !Ref ForwardToEmailAddress # the email to receive the notifications
-           Protocol: email
-       TopicName: 'my-sns-topic-name'
+         - Endpoint: 
+             Fn::GetAtt: [ EmailForwardLambdaFunction , "Arn" ]
+           Protocol: lambda 
+       TopicName: 'ForwardEmailTopic'
 
     # A rule set that will hold instructions on what to do with an email sent to the simple email service
     EmailRuleSet:
      Type: AWS::SES::ReceiptRuleSet
      Properties:
-       RuleSetName: 'my-ruleset-name'
+       RuleSetName: 'ForwardEmailToGmail'
     # The actual rules for the rule set
     EmailRule:
      Type: AWS::SES::ReceiptRule
@@ -184,103 +187,146 @@ Resources:
          Actions:
            - SNSAction:
                TopicArn:
-                 Ref: EmailSNS  # name of your SNS resource
+                 Ref: EmailToLambdaSNS  # name of your SNS resource
          Enabled: true
-         Name: 'your-rule-name'
+         Name: 'sendEmailToForwardSNSRule'
          ScanEnabled: true
          Recipients:
            - !Ref NewEmailAddress
        RuleSetName:
          Ref: EmailRuleSet  # name of your rule set resource
 
+    ##
     # The email forwarding lambda
-    ## Specifying the S3 Bucket for Email
-#    EmailS3Bucket:
-#      Type: AWS::S3::Bucket
-#      Properties:
-#        BucketName: 
-#          Ref: EmailForwardS3Name
-    ## Specifying the policies to make sure all files inside the Bucket are avaialble to CloudFront
-#    EmailS3BucketPolicy:
-#      Type: AWS::S3::BucketPolicy
-#      Properties:
-#        Bucket:
-#          Ref: EmailForwardS3Name
-#        PolicyDocument:
-#          Statement:
-#            - Sid: AllowSESPuts
-#              Effect: Allow
-#              Principal:
-#                Service: ses.amazonaws.com
-#              Action:
-#              - s3:PutObject
-#              Resource:
-#                Fn::Join:
-#                - ''
-#                - - 'arn:aws:s3:::'
-#                  - Ref: EmailS3Bucket
-#                  - "/*"
-#              Condition: {
-#                StringEquals:
-#                    aws:Referer: !Ref "AWS::AccountId"
-#  LambdaS3ForwardRole:
-#    Type: AWS::IAM::Role
-#    Properties:
-#      AssumeRolePolicyDocument:
-#        Version: '2012-10-17'
-#        Statement:
-#        - Effect: Allow
-#          Principal: {Service: [lambda.amazonaws.com]}
-#          Action: ['sts:AssumeRole']
-#      Path: /
-#      ManagedPolicyArns:
-#      - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
-#      Policies:
-#      - PolicyName: S3Policy
-#        PolicyDocument:
-#          Version: '2012-10-17'
-#          Statement:
-#            - Effect: Allow
-#              Action:
-#                - 's3:GetObject'
-#                - 'ses:SendRawEmail
-#              Resource:
-#               - !Sub "arn:aws:s3:::${EmailForwardS3Name}/*"
-#               - !Sub "arn:aws:ses:us-east-2:${AWS::AccountId}:identity/*"
-#  EmailForwardLambdaFunction:
-#    Type: AWS::Lambda::Function
-#    Properties:
-#      Code:
-#        ZipFile: >
-#          "use strict";
-#          var AWS = require('aws-sdk');
-#          console.log("AWS Lambda SES Forwarder // @arithmetric // Version 5.1.0");
-#          // Based on https://github.com/arithmetric/aws-lambda-ses-forwarder/blob/master/index.js
-#          exports.handler = function(event, context, callback, overrides) {
-#            //Check if the event is invalid
-#            if (!event ||
-#                  !event.hasOwnProperty('Records') ||
-#                  event.Records.length !== 1 ||
-#                  !event.Records[0].hasOwnProperty('eventSource') ||
-#                  event.Records[0].eventSource !== 'aws:ses' ||
-#                  event.Records[0].eventVersion !== '1.0') {
-#              console.log("SNS of wrong format.");
-#              return;
-#            }
-#            //Read the email.
-#            var email = event.Records[0].ses.mail;
-#            var originalRecipiants = event.Records[0].ses.receipt.recipients;  
-#            console.log("Got email and recipiants.");
-#            var recipiant = "stemforestbooks@gmail.com";
-#          };
-#      Handler: index.handler
-#      Role:
-#        Fn::GetAtt: [ LambdaS3ForwardRole , "Arn" ]
-#      Runtime: nodejs16.x
-#      Timeout: 60
+    ##
+    #Lambda Permissions
+    LambdaEmailForwardRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+          - Effect: Allow
+            Principal: {Service: [lambda.amazonaws.com]}
+            Action: ['sts:AssumeRole']
+        Path: /
+        ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+        Policies:
+        - PolicyName: S3Policy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 'ses:SendEmail'
+                Resource:
+                 - !Sub "arn:aws:ses:us-east-2:${AWS::AccountId}:identity/*"
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: '*'
+    EmailForwardLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        Code:
+          ZipFile: !Sub |
+                "use strict";
+                var AWS = require("aws-sdk");
+                const ses = new AWS.SES({apiVersion: "2010-12-01"});
+                console.log("AWS Lambda SES Forwarder // @arithmetric // @Quackack modified");
+                // Based on https://github.com/arithmetric/aws-lambda-ses-forwarder/blob/master/index.js
+                exports.handler = function(event, context, callback, overrides) {
+                  //Check if the event is invalid
+                  if (!event ||
+                        !event.hasOwnProperty("Records") ||
+                        event.Records.length !== 1 ||
+                        !event.Records[0].hasOwnProperty("EventSource") ||
+                        event.Records[0].EventSource !== "aws:sns" ||
+                        event.Records[0].EventVersion !== "1.0") {
+                    console.log("SNS of wrong format.");
+                    console.log(event);
+                    if (!event.hasOwnProperty("Records") ||
+                        event.Records.length !== 1) {
+                        return { statusCode: 400,  body: "Wrong Number Of Records." };
+                    }
+                    if (!event.Records[0].hasOwnProperty("eventSource") ||
+                        event.Records[0].eventSource !== "aws:sns") {
+                        return { statusCode: 400,  body: "Wrong Source." };
+                    }
+                    if (event.Records[0].eventVersion !== "1.0") {
+                        return { statusCode: 400,  body: "Wrong SNS Version." };
+                    }
+                    return { statusCode: 400,  body: "Mystery Validation Error." };
+                  }
+                  //Read the email.
+                  var emailData = JSON.parse(event.Records[0].Sns.Message);
+                  var headers =  emailData.mail.commonHeaders;
+                  var fullEmail = Buffer.from(emailData.content, "base64").toString("UTF-8");
+                  var body = fullEmail;
+                  if (fullEmail.indexOf("<html>") >= 0 && fullEmail.indexOf("</html>") > fullEmail.indexOf("<html>")) {
+                      body = fullEmail.substring(fullEmail.indexOf("<html>"), fullEmail.indexOf("</html>") + 7);
+                  }
+                  if (fullEmail.indexOf("boundary=\"") >= 0) {
+                      var boundaryStart = fullEmail.substring(fullEmail.indexOf("boundary=\"") + 10);
+                      var boundary = boundaryStart.substring(0, boundaryStart.indexOf("\""));
+                      var currentBody = boundaryStart.substring(2);
+                      body = currentBody.substring(boundaryStart.indexOf(boundary) + boundary.length);
+                  }
+                  //Make Send Request
+                  var sesRequest = {
+                            Destination: { ToAddresses: ["${ForwardToEmailAddress}"]},
+                            Source: "${NewEmailAddress}",
+                            ReplyToAddresses: headers.from,
+                            Message: {
+                                Body: {
+                                    Html: {
+                                        Charset: "UTF-8",
+                                        Data: body
+                                    }
+                                },
+                                Subject: {
+                                    Charset: "UTF-8",
+                                    Data: headers.subject
+                                }
+                            }
+                        };
+                  //Send The Email
+                  console.log("Got email and recipiants.");
+                  console.log("Full Email:" + fullEmail);
+                  console.log("Found Body:" + body);
+                  ses.sendEmail(sesRequest, (err, data) => {
+                      if (err) {
+                          return console.log(err, err.stack);
+                      } else {
+                          console.log("Email sent.", data);
+                      }
+                  });
+                };
+        Runtime: nodejs16.x
+        Architectures:
+          - arm64
+        Role:
+          Fn::GetAtt: [ LambdaEmailForwardRole , "Arn" ]
+        Timeout: 60
+#        Events:
+#          SNS1:
+#            Type: SNS
+#            Properties:
+#              Topic:
+#                Ref: EmailToLambdaSNS
+    # Explicitely add permission for SNS to trigger lambda
+    LambdaFunctionPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName: !GetAtt EmailForwardLambdaFunction.Arn
+        Principal: sns.amazonaws.com
 
   ## In order to print out the hosted domain via `serverless info` we need to define the DomainName output for CloudFormation
 Outputs:
   WebAppCloudFrontDistributionOutput:
     Value:
-      'Fn::GetAtt': [ WebAppCloudFrontDistribution, DomainName ]
+      Fn::GetAtt: [ WebAppCloudFrontDistribution, DomainName ]

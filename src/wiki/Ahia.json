@@ -1,9 +1,9 @@
 {
 	"Category": "Character",
-	"PageName": "Ahia",
+	"PageName": "ahia",
 	"Name": "Ahia",
 	"ShortDescription": "The spirit of a gift bag, Akpa.",
-	"Books": ["LeafsLibrary"],
+	"Books": ["leafslibrary"],
 	"Appearance": {
 		"Species": "Sprit of a Bag: Tsukumogami",
 		"Sex": "Female",
@@ -21,6 +21,6 @@
 	"Hobbies": ["Gifts", "Birthdays", "Parties", "Trading", "Games", "Talking"],
 	"Expertise": ["Hashing", "Randomized Algorithms"],
 	"OCEAN": {"O": 9, "C": 7, "E": 10, "A": 9, "N": 8},
-	"Friends": ["Leaf", "Airon", "Bouquet", "Ututu"],
+	"Friends": ["leaf", "airon", "bouquet", "ututu"],
 	"Biography": "<p>Ahia loves giving gifts and being at parties. She is very kind and cheery, and not usually the center of attention. If you like parties, and especially presents, Ahia would be a great friend.</p><p>Ahia is loosely based on the japanese folklore of \"tsukumogami\", old tools that have aquired their own spirit.</p>"
 }

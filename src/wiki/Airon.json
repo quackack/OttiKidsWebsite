@@ -1,9 +1,9 @@
 {
 	"Category": "Character",
-	"PageName": "Airon",
+	"PageName": "airon",
 	"Name": "Airon",
 	"ShortDescription": "A paraplegic, tinker fairy.",
-	"Books": ["LeafsLibrary"],
+	"Books": ["leafslibrary"],
 	"Appearance": {
 		"Species": "Fairy",
 		"Sex": "Male",
@@ -19,6 +19,6 @@
 	"Hobbies": ["Ballet", "Building"],
 	"Expertise": ["Low Level Hardware", "Automata"],
 	"OCEAN": {"O": 9, "C": 1, "E": 5, "A": 5, "N": 1},
-	"Friends": ["Bouquet", "Leaf", "Ahia"],
+	"Friends": ["bouquet", "leaf", "ahia"],
 	"Biography": "<p>Even for a fairy, not having legs is annoying. Fairies generally start flying by a skip, hop, and a jump, something Airon can't do. Still, with enough effort, he can get into the air, or with help from a friend. Still, he wants to automate things so that others can do more without help.</p>"
 }
