@@ -1,0 +1,24 @@
+{
+	"Category": "Character",
+	"PageName": "Kris",
+	"Name": "Kris",
+	"ShortDescription": "A quantum fairy.",
+	"Books": ["LeafsLibrary"],
+	"Appearance": {
+		"Species": "Fairy",
+		"Sex": "|+>",
+		"Skin": {"Color": "Cyan", "Texture": "Soft"},
+		"Hair": {"Color": "White", "Texture": "Straight", "Length": "Half an Inch"},
+		"Height": "7 inches",
+		"Weight": "10 ounces"
+	},
+	"Summary": "Kris is a quantum fairy. Kris exhibts many odd quantum behaviour, such as quantum tunneling. No one has seen them do this of course, but know that they must as they are occasionally found in locked rooms that they should not have been able to enter. Kris is often in multiple places at once, although if you observe them, they are immediately in the exact one you observe.",
+	"Powers": [{"PowerName": "Quantum Tunnel", "Description": "Can tunnel through objects when unobserved."}],
+	"Jobs": [],
+	"Places": [],
+	"Hobbies": [],
+	"Expertise": ["Quantum Mechanics"],
+	"OCEAN": {"O": 3, "C": 4, "E": 2, "A": 6, "N": 6},
+	"Friends": ["Leaf"],
+	"Biography": "<p>Kris often describes themselves as nonbinary, but is technically the |+&gt; sex. This is a certain superposition of both male and female, and is quite common among quantum fairies.</p>"
+}

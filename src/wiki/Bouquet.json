@@ -1,0 +1,24 @@
+{
+	"Category": "Character",
+	"PageName": "Bouquet",
+	"Name": "Bouquet",
+	"ShortDescription": "A ballerina, garden fairy.",
+	"Books": ["LeafsLibrary"],
+	"Appearance": {
+		"Species": "Fairy",
+		"Sex": "Female",
+		"Skin": {"Color": "Pink", "Texture": "Soft"},
+		"Hair": {"Color": "Pink", "Texture": "Curly", "Length": "1 inch"},
+		"Height": "6 inches",
+		"Weight": "12 ounces"
+	},
+	"Summary": "Bouquet is a Ballarina garden fairy. Bouquet has a passion for dancing and her garden. She has abnormally large wings which give her a unique majestic flying style. While her wings make some ballet moves harder than for other fairies, it also lets her do things most Ballarinas can't!",
+	"Powers": [{"PowerName": "Dance Powder", "Description": "Fairy powder that causes small objects to spin and dance."}],
+	"Jobs": ["Ballarina"],
+	"Places": [],
+	"Hobbies": ["Dancing", "Fashion", "Flowers"],
+	"Expertise": ["Kinematics", "Physics"],
+	"OCEAN": {"O": 5, "C": 9, "E": 2, "A": 6, "N": 7},
+	"Friends": ["Leaf", "Airon", "Ahia", "Ututu"],
+	"Biography": ""
+}

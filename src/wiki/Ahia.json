@@ -1,0 +1,26 @@
+{
+	"Category": "Character",
+	"PageName": "Ahia",
+	"Name": "Ahia",
+	"ShortDescription": "The spirit of a gift bag, Akpa.",
+	"Books": ["LeafsLibrary"],
+	"Appearance": {
+		"Species": "Sprit of a Bag: Tsukumogami",
+		"Sex": "Female",
+		"Skin": {"Color": "Gray", "Texture": "Dense Fog"},
+		"Hair": {"Color": "Black", "Texture": "Curley", "Length": "Half an Inch"},
+		"Height": "4 inches",
+		"Weight": "zero"
+	},
+	"Summary": "Ahia is the spirit of an old gift bag named Akpa. Everytime Akpa was given to a child with a present, it was saved and reused to give another present. After many, many gifts, Akpa gained a positive energy that eventually became its own spirit, Ahia.",
+	"Powers": [{"PowerName": "Float", "Description": "Can float through the air."},
+				{"PowerName": "Phase", "Description": "Can phase through items and obstacles."},
+				{"PowerName": "Bound", "Description": "Can not get too far from Akpa, and can only be hurt if akpa is damaged."}],
+	"Jobs": ["Store Owner"],
+	"Places": [],
+	"Hobbies": ["Gifts", "Birthdays", "Parties", "Trading", "Games", "Talking"],
+	"Expertise": ["Hashing", "Randomized Algorithms"],
+	"OCEAN": {"O": 9, "C": 7, "E": 10, "A": 9, "N": 8},
+	"Friends": ["Leaf", "Airon", "Bouquet", "Ututu"],
+	"Biography": "<p>Ahia loves giving gifts and being at parties. She is very kind and cheery, and not usually the center of attention. If you like parties, and especially presents, Ahia would be a great friend.</p><p>Ahia is loosely based on the japanese folklore of \"tsukumogami\", old tools that have aquired their own spirit.</p>"
+}

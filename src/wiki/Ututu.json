@@ -1,0 +1,27 @@
+{
+	"Category": "Character",
+	"PageName": "Ututu",
+	"Name": "Ututu",
+	"ShortDescription": "An outgoing, dancing Will-o'-Wisp.",
+	"Books": [],
+	"Appearance": {
+		"Species": "Will-o'-The-Wisp",
+		"Sex": "Female",
+		"Skin": {"Color": "White", "Texture": "Puffy, Soft, and Cushiony, Like a Cloud or Pillow."},
+		"Hair": {"Color": "Green", "Texture": "Curly, Leafy, Viney", "Length": "1 inch"},
+		"Height": "6 inches",
+		"Weight": "8 ounces"
+	},
+	"Summary": "Ututu dances around marshes in the early morning. If she sees a lost person, she tries to guide them home with wind and flashes of light. She often gets into arguments.",
+	"Powers": [{"PowerName": "Emmit Flame", "Description": "Can emit flames from their body."},
+				{"PowerName": "Float", "Description": "Can float through the air."},
+				{"PowerName": "Wind Control", "Description": "Can create wind."},
+				{"PowerName": "Infared Vision", "Description": "Can see infared colors, which lets them see hot items."} ],
+	"Jobs": ["Balarina"],
+	"Places": [],
+	"Hobbies": ["Dancing", "Arguing", "Guiding"],
+	"Expertise": [],
+	"OCEAN": {"O": 7, "C": 2, "E": 7, "A": 1, "N": 3},
+	"Friends": ["Ahia", "Leaf", "Bouquet"],
+	"Biography": ""
+}
