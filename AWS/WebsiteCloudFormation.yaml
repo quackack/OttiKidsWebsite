@@ -220,6 +220,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - 'ses:SendEmail'
+                  - 'ses:SendRawEmail'
                 Resource:
                  - !Sub "arn:aws:ses:us-east-2:${AWS::AccountId}:identity/*"
               - Effect: Allow
@@ -237,7 +238,35 @@ Resources:
                 var AWS = require("aws-sdk");
                 const ses = new AWS.SES({apiVersion: "2010-12-01"});
                 console.log("AWS Lambda SES Forwarder // @arithmetric // @Quackack modified");
+                var forwardToEmail = "${ForwardToEmailAddress}";
+                var forwardFromEmail = "${NewEmailAddress}";
                 // Based on https://github.com/arithmetric/aws-lambda-ses-forwarder/blob/master/index.js
+                //This transforms the raw message into the message we need.
+                function getRawMessage(fullEmail, headersFromSes) {
+                  var match = fullEmail.match(/^((?:.+\r?\n)*)(\r?\n(?:.*\s+)*)/m);
+                  var header = match && match[1] ? match[1] : fullEmail;
+                  var body = match && match[2] ? match[2] : '';
+                  // Add "Reply-To:" with the "From" address if it doesn't already exists
+                  if (!/^reply-to:[\t ]?/mi.test(header)) {
+                    header = header + 'Reply-To: ' + headersFromSes.from + "\r\n";
+                  }
+                  // SES does not allow sending messages from an unverified address,
+                  // so replace the message's "From:" header with the original
+                  // recipient (which is a verified domain)
+                  header = header.replace(
+                    /^from:[\t ]?(.*(?:\r?\n\s+.*)*)/mgi,
+                    function(match, from) {
+                      return 'From: ' + from.replace(/<(.*)>/, '').trim() + ' <' + forwardFromEmail + '>';
+                    });
+                  // Replace original 'To' header with a manually defined one
+                  header = header.replace(/^to:[\t ]?(.*)/mgi, 'To: ' + forwardToEmail);
+                  // Remove many unnecessary headers
+                  header = header.replace(/^return-path:[\t ]?(.*)\r?\n/mgi, '');
+                  header = header.replace(/^sender:[\t ]?(.*)\r?\n/mgi, '');
+                  header = header.replace(/^message-id:[\t ]?(.*)\r?\n/mgi, '');
+                  header = header.replace(/^dkim-signature:[\t ]?.*\r?\n(\s+.*\r?\n)*/mgi, '');
+                  return header + body;
+                }
                 exports.handler = function(event, context, callback, overrides) {
                   //Check if the event is invalid
                   if (!event ||
@@ -265,41 +294,49 @@ Resources:
                   var emailData = JSON.parse(event.Records[0].Sns.Message);
                   var headers =  emailData.mail.commonHeaders;
                   var fullEmail = Buffer.from(emailData.content, "base64").toString("UTF-8");
-                  var body = fullEmail;
-                  if (fullEmail.indexOf("<html>") >= 0 && fullEmail.indexOf("</html>") > fullEmail.indexOf("<html>")) {
-                      body = fullEmail.substring(fullEmail.indexOf("<html>"), fullEmail.indexOf("</html>") + 7);
-                  }
-                  if (fullEmail.indexOf("boundary=\"") >= 0) {
-                      var boundaryStart = fullEmail.substring(fullEmail.indexOf("boundary=\"") + 10);
-                      var boundary = boundaryStart.substring(0, boundaryStart.indexOf("\""));
-                      var currentBody = boundaryStart.substring(2);
-                      body = currentBody.substring(boundaryStart.indexOf(boundary) + boundary.length);
-                  }
+                  console.log("Full Email:" + fullEmail);
+                  var rawMessage = getRawMessage(fullEmail, headers);
+                  console.log("Transformed Email:" + rawMessage);
                   //Make Send Request
                   var sesRequest = {
-                            Destination: { ToAddresses: ["${ForwardToEmailAddress}"]},
-                            Source: "${NewEmailAddress}",
-                            ReplyToAddresses: headers.from,
-                            Message: {
-                                Body: {
-                                    Html: {
-                                        Charset: "UTF-8",
-                                        Data: body
-                                    }
-                                },
-                                Subject: {
-                                    Charset: "UTF-8",
-                                    Data: headers.subject
-                                }
-                            }
+                            Destinations: [forwardToEmail],
+                            Source: forwardFromEmail,
+                            RawMessage: {
+                                Data: rawMessage
+                           }
                         };
                   //Send The Email
                   console.log("Got email and recipiants.");
-                  console.log("Full Email:" + fullEmail);
-                  console.log("Found Body:" + body);
-                  ses.sendEmail(sesRequest, (err, data) => {
+                  ses.sendRawEmail(sesRequest, (err, data) => {
                       if (err) {
-                          return console.log(err, err.stack);
+                        console.log("Failed to sendRawEmail");
+                          console.log(err, err.stack);
+                          var sesRequest = {
+                                            Destination: { ToAddresses: [forwardToEmail]},
+                                            Source: forwardFromEmail,
+                                            ReplyToAddresses: headers.from,
+                                            Message: {
+                                                Body: {
+                                                    Text: {
+                                                        Charset: "UTF-8",
+                                                        Data: fullEmail
+                                                    }
+                                                },
+                                                Subject: {
+                                                    Charset: "UTF-8",
+                                                    Data: "Error when delivering: " + headers.subject
+                                                }
+                                            }
+                                        };
+                          ses.sendEmail(sesRequest, (err, data) => {
+                                      if (err) {
+                                          console.log("Failed to send backup email.");
+                                          return console.log(err, err.stack);
+                                      } else {
+                                          console.log("Backup Email sent.", data);
+                                      }
+                                  });
+                          return { statusCode: 400,  body: "Wrong Failed to Send Raw Version." };
                       } else {
                           console.log("Email sent.", data);
                       }
