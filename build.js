@@ -87,8 +87,10 @@ function createWiki() {
 			pageContent += getCharacterPage(jsonContent, pageSourceMap);
 			characters.push(jsonContent.PageName);
 		} else if (jsonContent.Category === "Place") {
+			pageContent += getPlacePage(jsonContent, pageSourceMap);
 			places.push(jsonContent.PageName);
 		} else if (jsonContent.Category === "Book") {
+			pageContent += getBookPage(jsonContent, pageSourceMap);
 			books.push(jsonContent.PageName);
 		}
 		
@@ -141,6 +143,22 @@ function getCharacterPage(jsonContent, pageSourceMap) {
 	pageContent += "<h1>Hobies</h1>" + htmlList(jsonContent.Hobbies);
 	pageContent += "<h1>Expertise</h1>" + htmlList(jsonContent.Expertise);
 	pageContent += "<h1>Jobs</h1>" + htmlList(jsonContent.Jobs);
+	
+	return pageContent;
+}
+
+function getPlacePage(jsonContent, pageSourceMap) {
+	var pageContent = "<h1>Links</h1>";
+	pageContent += listLinks("Books", jsonContent.Books, pageSourceMap);
+	pageContent += listLinks("Characters", jsonContent.Characters, pageSourceMap);
+	
+	return pageContent;
+}
+
+function getBookPage(jsonContent, pageSourceMap) {
+	var pageContent = "<h1>Links</h1>";
+	pageContent += listLinks("Places", jsonContent.Places, pageSourceMap);
+	pageContent += listLinks("Characters", jsonContent.Characters, pageSourceMap);
 	
 	return pageContent;
 }

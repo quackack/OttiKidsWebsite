@@ -1,7 +1,8 @@
 /**
  * Remove default margin.
  */
-body {
+body, html {
+  width: 100%;
   margin: 0;
   background-color: #806040;
   background: linear-gradient(to bottom, #907050, #201008);
@@ -12,6 +13,7 @@ body {
 }
 
 #Header {
+  width: 100%;
   background-color: #c0e0ff;
   background: linear-gradient(to bottom, #d0f0ff, #b0c0ff);
   background-repeat: no-repeat;
@@ -20,6 +22,7 @@ body {
   overflow: auto;
 }
 #Body {
+  width: 100%;
   background-color: #c3dbbc;
   background: linear-gradient(to bottom, #c3ffbc, #40a040);
   background-repeat: no-repeat;

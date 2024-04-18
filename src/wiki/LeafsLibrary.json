@@ -6,5 +6,5 @@
 	"Characters": ["leaf", "airon", "ahia", "bouquet", "kris"],
 	"Summary": "In Leaf's Library, Leaf learns binary search to find books for her friends faster.",
 	"Places": ["library"],
-	"Biography": ""
+	"Biography": "<p>First Bouquet asks for a book, Leaf finds it in new arrivals. Then Airon asks for a book, and Leaf finds it. Airon decides this is too difficult for Leaf and leaves to make a robot to help her. Then Kris wants a book deep in the library. Together Kris and Airon figure out they can skip books when searching to save time, and look back after they passed a book. When Ahia asks for a book, Leaf formalizes this technique with binary search, so she finds it quickly now. When Airon returns with his robot, Leaf can find the books much faster than the robot since the robot is still using a slow sequential search instead of a fast binary search.</p>"
 }
