@@ -84,12 +84,10 @@ Resources:
           - leafslibrary.com
           - stemforestbooks.com
           DefaultRootObject: index.html
-          ## Since the Single Page App is taking care of the routing we need to make sure ever path is served with index.html
-          ## The only exception are files that actually exist e.h. app.js, reset.css
           CustomErrorResponses:
             - ErrorCode: 403
-              ResponseCode: 200
-              ResponsePagePath: /index.html
+              ResponseCode: 404
+              ResponsePagePath: /404.html
           DefaultCacheBehavior:
             AllowedMethods:
             - GET
