@@ -1,5 +1,5 @@
-# Otti Kids Book Website
-The HTML for the Otti Kids Book Website.
+# Stem Forest Books Website
+The HTML for the Stem Forest Books Website.
 
 This is a simple repo to hold the html used in the otti kids website. This html, css, and javascript code is free for you to browse, or copy without restriction. The assets and the characters however are the property of Joshua and Tayvin Otti, the creators of this website and this git repo.
 
