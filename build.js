@@ -93,7 +93,7 @@ function createWiki() {
 		}
 		
 		pageContent += "<h1>Biography</h1>" + jsonContent.Biography;
-		pageContent += "</body></html>";
+		pageContent += formatFileForDepth(footerHTML, 1) + "</body></html>";
 		
 		fs.writeFileSync(WIKI_OUT_DIR + "/" + jsonContent.PageName + ".html", pageContent);
 	}
@@ -119,8 +119,8 @@ function getCharacterPage(jsonContent, pageSourceMap) {
 	pageContent += "<h1>Appearance</h1><ul>" +
 			"<li>Species: " + jsonContent.Appearance.Species + "</li>" +
 			"<li>Sex: " + jsonContent.Appearance.Sex + "</li>" +
-			"<li>Height: " + jsonContent.Appearance + "</li>" +
-			"<li>Weight: " + jsonContent.Appearance + "</li>" +
+			"<li>Height: " + jsonContent.Appearance.Height + "</li>" +
+			"<li>Weight: " + jsonContent.Appearance.Weight + "</li>" +
 			"<li>Skin: <ul><li>Color: " + jsonContent.Appearance.Skin.Color +
 			"</li><li>Texture: " + jsonContent.Appearance.Skin.Texture +
 			"</li></ul></li><li>Hair: <ul><li>Color: " + jsonContent.Appearance.Hair.Color +

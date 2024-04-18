@@ -3,12 +3,39 @@
  */
 body {
   margin: 0;
-  background-color: #c3dbbc;
-  background: linear-gradient(to bottom, #c3ffbc, #40a040);
+  background-color: #806040;
+  background: linear-gradient(to bottom, #907050, #201008);
   background-repeat: no-repeat;
   background-attachment: fixed;
   color: #004030;
   font-family: "Arial", sans-serif;
+}
+
+#Header {
+  background-color: #c0e0ff;
+  background: linear-gradient(to bottom, #d0f0ff, #b0c0ff);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin-top: 0;
+  overflow: auto;
+}
+#Body {
+  background-color: #c3dbbc;
+  background: linear-gradient(to bottom, #c3ffbc, #40a040);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin-top: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  min-height: 600px;
+  width: 100%;
+}
+
+#footer {
+  padding: 1%;
+  width: 100%;
+  overflow: auto;
+  color: #b0ffc0;
 }
 
 h1 {
@@ -37,13 +64,6 @@ p {
 
 #HeaderHome {
 	float: left;
-	width: 23%;
-	margin-left: 1%;
-	margin-right: 1%;
-	margin-bottom: 10px;
-	
-	text-align: center;
-	
 	background-color: #d080ff;
 	background: linear-gradient(to bottom, #f0a0ff, #b060e0);
 }
@@ -55,9 +75,20 @@ p {
 	margin-left: 1%;
 	margin-right: 1%;
 	margin-bottom: 10px;
+	margin-top: 10px;
 	
 	text-align: center;
 
 	background-color: #ffa0e0;
 	background: linear-gradient(to bottom, #ffa0f0, #f080d0);
+}
+
+.FooterSection {
+	float: left;
+	
+	width: 47%;
+	margin: 1%;
+	
+	text-align: left;
+
 }
