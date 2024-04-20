@@ -4,6 +4,7 @@
 	"Name": "Ututu",
 	"ShortDescription": "An outgoing, dancing Will-o'-Wisp.",
 	"Books": [],
+	"Songs": [{"Title": "Ututu's Theme", "mp3": "../songs/ututus_theme.mp3", "Author": "Joshua Otti Using Udio.com"}],
 	"Appearance": {
 		"Species": "Will-o'-The-Wisp",
 		"Sex": "Female",

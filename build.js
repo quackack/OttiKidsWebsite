@@ -21,6 +21,10 @@ cleanUpBuild();
 const headerHTML = fs.readFileSync(HEADER_DIR).toString('utf8');
 const footerHTML = fs.readFileSync(FOOTER_DIR).toString('utf8');
 
+function endsWith(str, suffix) {
+    return str.length >= suffix.length && str.substring(str.length-suffix.length) === suffix;
+}
+
 function copyWithProcessing(outRoot, sourceRoot, currentFile, depth) {
 	var fullSourcePath = sourceRoot + "/" + currentFile;
 	var fullOutPath = outRoot + "/" + currentFile;
@@ -32,12 +36,23 @@ function copyWithProcessing(outRoot, sourceRoot, currentFile, depth) {
 		}
 		return;
 	}
+	
+	if (!endsWith(currentFile, ".html") && ! endsWith(currentFile, ".htm")) {
+		fs.copyFile(fullSourcePath, fullOutPath, (err) => {
+		if (err) {
+			console.error(err);
+			return;
+		}
+	});
+		return;
+	}
 
 	fs.readFile(fullSourcePath, 'utf8', (err, data) => {
 		if (err) {
 			console.error(err);
 			return;
 		}
+		
 		//Put in the header.
 		let fixedHeader = formatFileForDepth(headerHTML, depth);
 		let fixedFooter = formatFileForDepth(footerHTML, depth);
@@ -83,6 +98,10 @@ function createWiki() {
 		pageContent += formatFileForDepth(headerHTML, 1);
 		pageContent += "<h1>" + jsonContent.Name + "</h1>";
 		pageContent += "<p>" + jsonContent.Summary + "</p>";
+		if (jsonContent.Songs) {
+			pageContent += "<h1>Songs</h1>";
+			pageContent += listSongs(jsonContent.Songs)
+		}
 		if (jsonContent.Category === "Character") {
 			pageContent += getCharacterPage(jsonContent, pageSourceMap);
 			characters.push(jsonContent.PageName);
@@ -160,6 +179,21 @@ function getBookPage(jsonContent, pageSourceMap) {
 	pageContent += listLinks("Places", jsonContent.Places, pageSourceMap);
 	pageContent += listLinks("Characters", jsonContent.Characters, pageSourceMap);
 	
+	return pageContent;
+}
+
+function listSongs(songs) {
+	var pageContent = "<ul>";
+	for (let song of songs) {
+		pageContent += "<li>" + song.Title;
+		if (song.Author) {
+			pageContent += " (Author: " + song.Author + ")";
+		}
+		pageContent += ": <audio controls><source src=\"" + song.mp3 + "\" type=\"audio/mpeg\">";
+		pageContent += "Your browser does not support the audio element. Download it <a href=\"" + song.mp3 + "\">here</a>.</audio>";
+		pageContent += "</li>";
+	}
+	pageContent += "</ul>";
 	return pageContent;
 }
 
