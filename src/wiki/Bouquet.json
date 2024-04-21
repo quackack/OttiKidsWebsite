@@ -4,6 +4,7 @@
 	"Name": "Bouquet",
 	"ShortDescription": "A ballerina, garden fairy.",
 	"Books": ["leafslibrary"],
+	"Songs": ["ututusmorning"],
 	"Appearance": {
 		"Species": "Fairy",
 		"Sex": "Female",

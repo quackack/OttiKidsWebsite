@@ -4,6 +4,7 @@
 	"Name": "Kris",
 	"ShortDescription": "A quantum fairy.",
 	"Books": ["leafslibrary"],
+	"Songs": ["lightninginkrisjar"],
 	"Appearance": {
 		"Species": "Fairy",
 		"Sex": "|+>",

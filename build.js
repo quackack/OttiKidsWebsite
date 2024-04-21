@@ -89,6 +89,7 @@ function createWiki() {
 	var characters = [];
 	var places = [];
 	var books = [];
+	var songs = [];
 	
 	for (let jsonContent of pageSources) {
 		var pageContent = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\" />" +
@@ -98,10 +99,6 @@ function createWiki() {
 		pageContent += formatFileForDepth(headerHTML, 1);
 		pageContent += "<h1>" + jsonContent.Name + "</h1>";
 		pageContent += "<p>" + jsonContent.Summary + "</p>";
-		if (jsonContent.Songs) {
-			pageContent += "<h1>Songs</h1>";
-			pageContent += listSongs(jsonContent.Songs)
-		}
 		if (jsonContent.Category === "Character") {
 			pageContent += getCharacterPage(jsonContent, pageSourceMap);
 			characters.push(jsonContent.PageName);
@@ -111,9 +108,11 @@ function createWiki() {
 		} else if (jsonContent.Category === "Book") {
 			pageContent += getBookPage(jsonContent, pageSourceMap);
 			books.push(jsonContent.PageName);
+		} else if (jsonContent.Category === "Song") {
+			pageContent += getSongPage(jsonContent, pageSourceMap);
+			songs.push(jsonContent.PageName);
 		}
 		
-		pageContent += "<h1>Biography</h1>" + jsonContent.Biography;
 		pageContent += formatFileForDepth(footerHTML, 1) + "</body></html>";
 		
 		fs.writeFileSync(WIKI_OUT_DIR + "/" + jsonContent.PageName + ".html", pageContent);
@@ -127,13 +126,19 @@ function createWiki() {
 	wikiPage += listLinks("Characters", characters, pageSourceMap);
 	wikiPage += listLinks("Books", books, pageSourceMap);
 	wikiPage += listLinks("Places", places, pageSourceMap);
+	wikiPage += "<h1>Songs</h1>" + listSongs(songs, pageSourceMap);
 
 	wikiPage += formatFileForDepth(footerHTML, 1) + "</body>";
 	fs.writeFileSync(WIKI_OUT_DIR + "/index.html", wikiPage);
 }
 
 function getCharacterPage(jsonContent, pageSourceMap) {
-	var pageContent = "<h1>Links</h1>";
+	var pageContent = "";
+	if (jsonContent.Songs) {
+		pageContent += "<h1>Songs</h1>";
+		pageContent += listSongs(jsonContent.Songs, pageSourceMap)
+	}
+	pageContent += "<h1>Links</h1>";
 	pageContent += listLinks("Friends", jsonContent.Friends, pageSourceMap);
 	pageContent += listLinks("Books", jsonContent.Books, pageSourceMap);
 	pageContent += listLinks("Places", jsonContent.Places, pageSourceMap);
@@ -163,6 +168,7 @@ function getCharacterPage(jsonContent, pageSourceMap) {
 	pageContent += "<h1>Expertise</h1>" + htmlList(jsonContent.Expertise);
 	pageContent += "<h1>Jobs</h1>" + htmlList(jsonContent.Jobs);
 	
+	pageContent += "<h1>Biography</h1>" + jsonContent.Biography;
 	return pageContent;
 }
 
@@ -170,6 +176,7 @@ function getPlacePage(jsonContent, pageSourceMap) {
 	var pageContent = "<h1>Links</h1>";
 	pageContent += listLinks("Books", jsonContent.Books, pageSourceMap);
 	pageContent += listLinks("Characters", jsonContent.Characters, pageSourceMap);
+	pageContent += "<h1>Biography</h1>" + jsonContent.Biography;
 	
 	return pageContent;
 }
@@ -179,21 +186,37 @@ function getBookPage(jsonContent, pageSourceMap) {
 	pageContent += listLinks("Places", jsonContent.Places, pageSourceMap);
 	pageContent += listLinks("Characters", jsonContent.Characters, pageSourceMap);
 	
+	pageContent += "<h1>Biography</h1>" + jsonContent.Biography;
 	return pageContent;
 }
 
-function listSongs(songs) {
+function getSongPage(jsonContent, pageSourceMap) {
+	var pageContent = "<p>" + getPlayerForSong(jsonContent) + "</p>";
+	pageContent += "<h2>Authors</h2><p>" + jsonContent.Author + "<\p>";
+	pageContent += "<h1>Lyrics</h1><p>" + jsonContent.Lyrics + "<\p>";
+	pageContent += "<h1>Links</h1>";
+	pageContent += listLinks("Characters", jsonContent.Characters, pageSourceMap);
+	return pageContent;
+}
+
+function listSongs(songs, pageSourceMap) {
 	var pageContent = "<ul>";
 	for (let song of songs) {
-		pageContent += "<li>" + song.Title;
+		let songData = pageSourceMap[song];
+		pageContent += "<li><a href=\"" + song +".html\">"+ songData.Name + "<\a>";
 		if (song.Author) {
-			pageContent += " (Author: " + song.Author + ")";
+			pageContent += " (Author: " + songData.Author + ")";
 		}
-		pageContent += ": <audio controls><source src=\"" + song.mp3 + "\" type=\"audio/mpeg\">";
-		pageContent += "Your browser does not support the audio element. Download it <a href=\"" + song.mp3 + "\">here</a>.</audio>";
+		pageContent += ": " + getPlayerForSong(songData);
 		pageContent += "</li>";
 	}
 	pageContent += "</ul>";
+	return pageContent;
+}
+
+function getPlayerForSong(songData) {
+	var pageContent = "<audio controls><source src=\"" + songData.mp3 + "\" type=\"audio/mpeg\">";
+		pageContent += "Your browser does not support the audio element. Download it <a href=\"" + songData.mp3 + "\">here</a>.</audio>";
 	return pageContent;
 }
 

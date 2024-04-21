@@ -4,6 +4,7 @@
 	"Name": "Airon",
 	"ShortDescription": "A paraplegic, tinker fairy.",
 	"Books": ["leafslibrary"],
+	"Songs": ["lightninginkrisjar"],
 	"Appearance": {
 		"Species": "Fairy",
 		"Sex": "Male",
