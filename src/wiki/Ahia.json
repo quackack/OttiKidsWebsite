@@ -4,6 +4,7 @@
 	"Name": "Ahia",
 	"ShortDescription": "The spirit of a gift bag, Akpa.",
 	"Books": ["leafslibrary"],
+	"Songs": ["ahiasparty"],
 	"Appearance": {
 		"Species": "Sprit of a Bag: Tsukumogami",
 		"Sex": "Female",

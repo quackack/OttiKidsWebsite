@@ -203,7 +203,7 @@ function listSongs(songs, pageSourceMap) {
 	var pageContent = "<ul>";
 	for (let song of songs) {
 		let songData = pageSourceMap[song];
-		pageContent += "<li><a href=\"" + song +".html\">"+ songData.Name + "<\a>";
+		pageContent += "<li><a href=\"" + song +".html\">"+ songData.Name + "</a>";
 		if (song.Author) {
 			pageContent += " (Author: " + songData.Author + ")";
 		}
