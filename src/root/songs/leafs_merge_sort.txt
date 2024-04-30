@@ -1,0 +1,69 @@
+[Intro]
+
+Sorting time.
+Sorting time.
+
+How? This seems hard. Leaf?
+
+
+[Verse, Sang, not spoken]
+Leaf sorts and cleans up.
+One sort is fast enough.
+Bubble and selection are slow.
+Merge sort is the best Leaf knows.
+
+Split, Sort, Sort, Merge.
+Split, Sort, Sort, Merge.
+Split, Sort, Sort, Merge.
+
+[Interlude]
+
+Split, Sort, Sort, Merge.
+
+[Verse]
+Merging sorted lists is fast,
+so sort halves and merge last.
+Then if we sort using recursion,
+our sorting time is n log n.
+
+Split, Sort, Sort, Merge.
+
+[Interlude]
+
+[Verse]
+Bubble sort can be linear time,
+when few things are misaligned.
+But can take quadratic time,
+in the worst case we can design.
+
+So we,
+
+Split, Sort, Sort, Merge.
+Split, Sort, Sort, Merge.
+
+[Chorus]
+Split, Sort, Sort, Merge.
+Split, Sort, Sort, Merge.
+
+To sort in quasi-linear time we,
+
+Split, Sort, Sort, Merge.
+Split, Sort, Sort, Merge.
+
+Split, Sort, Sort, Merge.
+Split, Sort, Sort, Merge.
+
+[Outro]
+
+Split, Sort, Sort, Merge.
+Split, Sort, Sort, Merge.
+
+Until next time, we
+
+Split, Sort, Sort, Merge.
+Split, Sort, Sort, Merge.
+
+Goodbye friends, remember to
+
+Split, Sort, Sort, Merge.
+Split, Sort, Sort, Merge.

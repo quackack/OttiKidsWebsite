@@ -35,10 +35,8 @@ body, html {
 }
 
 #footer {
-  padding: 1%;
   width: 100%;
   overflow: auto;
-  color: #b0ffc0;
 }
 
 h1 {
@@ -89,7 +87,7 @@ p {
 .FooterSection {
 	float: left;
 	
-	width: 47%;
+	width: 46%;
 	margin: 1%;
 	
 	text-align: left;
