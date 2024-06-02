@@ -1,0 +1,39 @@
+/**
+ * Remove default margin.
+ */
+.bookcover {
+	float: right;
+	
+	width: 28%;
+	margin: 1%;
+}
+
+.descripion {
+  overflow: auto;
+}
+
+.preview {
+	overflow: auto;
+	text-align: center;
+}
+
+.bookpage {
+	float: left;
+	margin: 0;
+	padding: 0;
+	margin: 5%;
+}
+
+.doublepage {
+	width: 90%;
+}
+
+.singlepage {
+	width: 45%;
+}
+.leftpage {
+	margin-right: 0;
+}
+.rightpage {
+	margin-left: 0;
+}

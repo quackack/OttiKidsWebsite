@@ -93,3 +93,14 @@ p {
 	text-align: left;
 
 }
+
+.floatinglinksection {
+	overflow: auto;
+	margin: 5%;
+}
+
+.floatingpicturelink {
+	height: 300px;
+	margin: 100px;
+	float: left;
+}

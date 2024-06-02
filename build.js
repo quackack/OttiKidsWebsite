@@ -215,6 +215,9 @@ function listSongs(songs, pageSourceMap) {
 }
 
 function getPlayerForSong(songData) {
+	if (songData.soundcloud) {
+		return songData.soundcloud;
+	}
 	var pageContent = "<audio controls><source src=\"" + songData.mp3 + "\" type=\"audio/mpeg\">";
 		pageContent += "Your browser does not support the audio element. Download it <a href=\"" + songData.mp3 + "\">here</a>.</audio>";
 	return pageContent;
