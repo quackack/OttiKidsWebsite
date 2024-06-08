@@ -104,3 +104,14 @@ p {
 	margin: 100px;
 	float: left;
 }
+
+.profilepicture {
+	float: right;
+	min-width: 300px;
+	width: 25%;
+}
+
+.profile {
+	width: 100%;
+	overflow: auto;
+}
