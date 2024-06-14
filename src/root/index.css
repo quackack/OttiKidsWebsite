@@ -115,3 +115,7 @@ p {
 	width: 100%;
 	overflow: auto;
 }
+
+.centeredVid {
+  text-align: center;
+}
