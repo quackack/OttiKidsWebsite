@@ -54,12 +54,11 @@ function copyWithProcessing(outRoot, sourceRoot, currentFile, depth) {
 		}
 		
 		//Put in the header.
-		let fixedHeader = formatFileForDepth(headerHTML, depth);
-		let fixedFooter = formatFileForDepth(footerHTML, depth);
-		let fixedData = data.replaceAll(HEADER_LOCATION_STRING, fixedHeader)
-							.replaceAll(FOOTER_LOCATION_STRING, fixedFooter);
+		let fixedData = data.replaceAll(HEADER_LOCATION_STRING, headerHTML)
+							.replaceAll(FOOTER_LOCATION_STRING, footerHTML);
+		let depthFormatted = formatFileForDepth(fixedData, depth);
 		
-		fs.writeFileSync(fullOutPath, fixedData);
+		fs.writeFileSync(fullOutPath, depthFormatted);
 	});
 }
 
@@ -93,10 +92,10 @@ function createWiki() {
 	
 	for (let jsonContent of pageSources) {
 		var pageContent = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\" />" +
-				"<!-- Need to add an icon!! <link rel=\"shortcut icon\" href=\"./favicon.ico\" /> -->" +
+				"<link rel=\"shortcut icon\" href=\"<!--depth-->/pictures/StemForestLogo.ico\" />" +
 				"<link rel=\"stylesheet\" href=\"../index.css\"><title>"
 				+ jsonContent.Name + ": Stem Forest Wiki</title></head><body>";
-		pageContent += formatFileForDepth(headerHTML, 1);
+		pageContent += headerHTML;
 		pageContent += "<h1>" + jsonContent.Name + "</h1>";
 		pageContent += "<p>" + jsonContent.Summary + "</p>";
 		if (jsonContent.Category === "Character") {
@@ -113,22 +112,25 @@ function createWiki() {
 			songs.push(jsonContent.PageName);
 		}
 		
-		pageContent += formatFileForDepth(footerHTML, 1) + "</body></html>";
+		pageContent += footerHTML + "</body></html>";
+		pageContent = formatFileForDepth(pageContent, 1);
 		
 		fs.writeFileSync(WIKI_OUT_DIR + "/" + jsonContent.PageName + ".html", pageContent);
 	}
 	
 	var wikiPage = "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\" />" +
-				"<!-- Need to add an icon!! <link rel=\"shortcut icon\" href=\"./favicon.ico\" /> -->" +
+				"<link rel=\"shortcut icon\" href=\"<!--depth-->/pictures/StemForestLogo.ico\" />" +
 				"<link rel=\"stylesheet\" href=\"../index.css\"><title>Stem Forest Wiki</title></head><body>" +
-				formatFileForDepth(headerHTML, 1) +
+				headerHTML +
 				"<h1>Welcome to the Stem Forest Wiki!</h1>";
 	wikiPage += listLinks("Characters", characters, pageSourceMap);
 	wikiPage += listLinks("Books", books, pageSourceMap);
 	wikiPage += listLinks("Places", places, pageSourceMap);
 	wikiPage += "<h1>Songs</h1>" + listSongs(songs, pageSourceMap);
 
-	wikiPage += formatFileForDepth(footerHTML, 1) + "</body>";
+	wikiPage += footerHTML + "</body>";
+	wikiPage = formatFileForDepth(wikiPage, 1);
+	
 	fs.writeFileSync(WIKI_OUT_DIR + "/index.html", wikiPage);
 }
 
