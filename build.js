@@ -54,9 +54,28 @@ function copyWithProcessing(outRoot, sourceRoot, currentFile, depth) {
 		}
 		
 		//Put in the header.
-		let fixedData = data.replaceAll(HEADER_LOCATION_STRING, headerHTML)
-							.replaceAll(FOOTER_LOCATION_STRING, footerHTML);
-		let depthFormatted = formatFileForDepth(fixedData, depth);
+		let depthFormatted = formatFileForDepth(data, depth);
+		
+		fs.writeFileSync(fullOutPath, depthFormatted);
+	});
+}
+
+function makeTrackedVersions(outRoot, sourceRoot) {
+	var GoogleAdsForLeafsLibrary = "<!-- Google tag (gtag.js) --> <script async src=\"https://www.googletagmanager.com/gtag/js?id=AW-16526022602\"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-16526022602'); </script>";
+	var trackingLocation = "<!--InsertTrackingHere-->";
+	var leafsLibrarySource = "leafslibrary.html";
+	var googleTrackedOutput = "leafslibraryfromgoogle.html";
+	var fullSourcePath = sourceRoot + "/" + leafsLibrarySource;
+	var fullOutPath = outRoot + "/" + googleTrackedOutput;
+	fs.readFile(fullSourcePath, 'utf8', (err, data) => {
+		if (err) {
+			console.error(err);
+			return;
+		}
+		
+		//Put in the header.
+		let fixedData = data.replaceAll(trackingLocation, GoogleAdsForLeafsLibrary);
+		let depthFormatted = formatFileForDepth(fixedData, 0);
 		
 		fs.writeFileSync(fullOutPath, depthFormatted);
 	});
@@ -67,10 +86,13 @@ function formatFileForDepth(file, depth) {
 	for (var i = 0; i < depth; i++) {
 		depthString += "/..";
 	}
-	return file.replaceAll(DEPTH_PLACEHOLDER, depthString);
+	return file.replaceAll(HEADER_LOCATION_STRING, headerHTML)
+				.replaceAll(FOOTER_LOCATION_STRING, footerHTML)
+				.replaceAll(DEPTH_PLACEHOLDER, depthString);
 }
 
 copyWithProcessing(OUT_DIR, SRC_DIR, "", -1);
+makeTrackedVersions(OUT_DIR, SRC_DIR);
 
 function createWiki() {
 	fs.mkdirSync(WIKI_OUT_DIR);
