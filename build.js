@@ -7,6 +7,8 @@ const HEADER_LOCATION_STRING = "<!--{header.html}-->";
 const FOOTER_DIR = "./src/templates/footer.html";
 const FOOTER_LOCATION_STRING = "<!--{footer.html}-->";
 const DEPTH_PLACEHOLDER = "<!--depth-->";
+const TRACKING_PLACEHOLDER = "<!--InsertTrackingHere-->";
+const LINK_TRACKING_PLACEHOLDER = "<!--InsertLinkTrackingHere-->";
 
 const WIKI_SRC_DIR = "./src/wiki";
 const WIKI_OUT_DIR = "./build/wiki";
@@ -61,8 +63,8 @@ function copyWithProcessing(outRoot, sourceRoot, currentFile, depth) {
 }
 
 function makeTrackedVersions(outRoot, sourceRoot) {
-	var GoogleAdsForLeafsLibrary = "<!-- Google tag (gtag.js) --> <script async src=\"https://www.googletagmanager.com/gtag/js?id=AW-16526022602\"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-16526022602'); </script>";
-	var trackingLocation = "<!--InsertTrackingHere-->";
+	var googleAdsTrackingTag = "<!-- Google tag (gtag.js) --> <script async src=\"https://www.googletagmanager.com/gtag/js?id=AW-16526022602\"></script> <script> window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', 'AW-16526022602'); </script>";
+	var googleAdsLinkTrackingCode = "onclick=\"gtag('event', 'conversion', {'send_to': 'AW-16526022602/VDlLCJiUibsZEMqvnMg9'});\"";
 	var leafsLibrarySource = "leafslibrary.html";
 	var googleTrackedOutput = "leafslibraryfromgoogle.html";
 	var fullSourcePath = sourceRoot + "/" + leafsLibrarySource;
@@ -74,7 +76,10 @@ function makeTrackedVersions(outRoot, sourceRoot) {
 		}
 		
 		//Put in the header.
-		let fixedData = data.replaceAll(trackingLocation, GoogleAdsForLeafsLibrary);
+		let fixedData = data.replaceAll(HEADER_LOCATION_STRING, headerHTML)
+							.replaceAll(FOOTER_LOCATION_STRING, footerHTML)
+							.replaceAll(TRACKING_PLACEHOLDER, googleAdsTrackingTag)
+							.replaceAll(LINK_TRACKING_PLACEHOLDER, googleAdsLinkTrackingCode);
 		let depthFormatted = formatFileForDepth(fixedData, 0);
 		
 		fs.writeFileSync(fullOutPath, depthFormatted);
@@ -88,7 +93,9 @@ function formatFileForDepth(file, depth) {
 	}
 	return file.replaceAll(HEADER_LOCATION_STRING, headerHTML)
 				.replaceAll(FOOTER_LOCATION_STRING, footerHTML)
-				.replaceAll(DEPTH_PLACEHOLDER, depthString);
+				.replaceAll(DEPTH_PLACEHOLDER, depthString)
+				.replaceAll(TRACKING_PLACEHOLDER, "")
+				.replaceAll(LINK_TRACKING_PLACEHOLDER, "");
 }
 
 copyWithProcessing(OUT_DIR, SRC_DIR, "", -1);
