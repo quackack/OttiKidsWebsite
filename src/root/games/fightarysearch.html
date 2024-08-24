@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Need to add an icon!! <link rel="shortcut icon" href="./favicon.ico" /> -->
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="./lookingupleafslibrarybooks.css">
+    <title>Fightary Search - Stem Forest Books</title>
+  </head>
+  <body>
+	<!--{header.html}-->
+    <h1>Fightary Search</h1>
+	
+	<p>Fightary Search is a competitive game to find the gold first. In each round, gold is hidden on an integer. Players check secret locations in turns, and are told if they guessed too low, or too high. But after each guess, they get to hide a trap on one of the squares.</p> 
+	<p>Whenever a player uncovers the gold, they get a point and the round resets.</p>
+	<p>If a player uncovers a trap, they are removed from the round.</p>
+	<p>If all players are removed by traps, the round ends.</p>
+	<p>If a player traps the gold, they lose a point.</p>
+	
+	<h2>Game Settings</h2>
+
+	<p>Enter number of players <input type="number" id="playerNumbInput" min="1" max="255" value="2"></p>
+	<p>Enter max value to find <input type="number" id="rangeInput" min="0" max="2000000000" value="20" step="10"></p>
+	<button type="button" onclick="makeNewGame()">Start New Game</button> 
+	
+	<h2>Game</h2>
+	<div id="gameContent">
+	</div>
+
+	<script src="fightarysearch.js"></script> 
+	
+	<!--{footer.html}-->
+  </body>
+</html>
