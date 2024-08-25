@@ -34,9 +34,9 @@ function startNewRound(gameData) {
 		playersAlive.add(i);
 	}
 	
-	gameData.round = {target: numberWanted, boobyTraps: new Set(), playersTurn: 0, inRoundPlayers: playersAlive, stage: ChooseWhereToCheck};
+	gameData.round = {target: numberWanted, boobyTraps: new Set(), playersTurn: 0, inRoundPlayers: playersAlive, stage: NotifyLessThan};
 	
-	var roundHtml = "<p>Current Players Turn: <span id=\"currentPlayersTurn\">0</span></p><p id=\"prompt\">Please enter the location you would like to check.</p><input type=\"number\" id=\"playerChoice\" min=\"0\" max=\"" + gameData.gameRange + "\" value=\"0\"> <button type=\"button\" onclick=\"submitDecision()\">Submit</button>";
+	var roundHtml = "<p>Current Players Turn: <span id=\"currentPlayersTurn\">0</span></p><p id=\"prompt\">Please enter a location you would like to trap.</p><input type=\"number\" id=\"playerChoice\" min=\"0\" max=\"" + gameData.gameRange + "\" value=\"0\"> <button type=\"button\" onclick=\"submitDecision()\">Submit</button>";
 	
 	document.getElementById("roundDiv").innerHTML = roundHtml;
 }
