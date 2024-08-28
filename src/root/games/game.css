@@ -1,0 +1,22 @@
+#GameContainer {
+	position: relative;
+	text-align: center;
+}
+
+canvas{
+	border: 1px solid black;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table, th, td {
+  border: 1px solid;
+  text-align: center;
+}
+
+td, th {
+	padding: 20px;
+}

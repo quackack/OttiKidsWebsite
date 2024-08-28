@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Need to add an icon!! <link rel="shortcut icon" href="./favicon.ico" /> -->
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="./game.css">
+    <title>Remainder Codes - Stem Forest Books</title>
+  </head>
+  <body>
+	<!--{header.html}-->
+    <h1>Remainder Codes</h1>
+	
+	<p> Requires understanding division and remainders, calculater encouraged.</p>
+	
+	<p>Ahia is counting her inventory, but she miscounts often, especially with big numbers. So instead of counting the whole number once, she counts it many times, but only counts mod a small number. For numbers X and Y, X mod Y is the remainder of X after dividing by Y. So for instance, 32 mod 3 = 2, 9 mod 6 = 3, and 5 mod 100 = 5. Counting mod numbers is really easy. To count mod 4, you just count 1, 2, 3, 0, 1, 2, 3, and so on. You only need to remember one of 0, 1, 2, and 3 and it just cycles. Since there are no big numbers to remember, Ahia messes up less.</p>
+
+	<p>Unfortunately, even counting mod, she might still make a mistake. Can you recover the full number?</p>
+	
+	<p>After choosing a difficulty, you will be asked to guess a number X. You will get a max value that X could be, MAX, and a maximum number of corruptions, CORRUPTIONS. Then you will get various pairs of Y and X mod Y, but up to C of these pairs will be wrong. Can you find the original X? </p>
+	
+	<h2>Game Settings</h2>
+
+	<p>Choose a difficulty <select name="difficulty" id="difficulty">
+  <option value="VE">Very Easy</option>
+  <option value="E">Easy</option>
+  <option value="M">Moderate</option>
+  <option value="H">Hard</option>
+  <option value="VH">Very Hard</option>
+  <option value="EH">Extremely Hard</option>
+</select></p>
+	<button type="button" onclick="makeNewGame()">Start New Game</button> 
+	
+	<h2>Game</h2>
+	<div id="gameContent">
+	</div>
+
+	<script src="remaindercodes.js"></script> 
+	
+	<!--{footer.html}-->
+  </body>
+</html>
