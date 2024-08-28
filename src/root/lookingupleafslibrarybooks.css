@@ -6,3 +6,12 @@
 canvas{
 	border: 1px solid black;
 }
+
+table, th, td {
+  border: 1px solid;
+  text-align: center;
+}
+
+td, th {
+	margin: 10px;
+}
