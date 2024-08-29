@@ -20,3 +20,19 @@ table, th, td {
 td, th {
 	padding: 20px;
 }
+
+.problem {
+	float: left;
+	padding: 20px;
+  border: 2px solid;
+  text-align: center;
+}
+
+.problems, .solutions {
+	clear: both;
+	padding: 20px;
+}
+
+@media print {
+  .problems, .solutions {page-break-after: always; page-break-after: always;}
+}
