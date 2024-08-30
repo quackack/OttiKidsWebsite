@@ -367,7 +367,7 @@ function getGMLFormattedString(edges, r, g, b) {
 //11, 11, 11, 7, 1, 300, 1000, false ~ 0.1
 //16, 16, 16, 8, 2, 1000, 1000, false ~ 0.05
 //50, 40, 40, 5, 2 ~ 0.065
-var best = getToughGraph(8, 8, 8, 7, 1, 1000, 2000, false);
+var best = getToughGraph(8, 8, 8, 7, 1, 100, 200, false);
 console.log("Best: " + best);
 
 var gmlString = getGMLFormattedString(best, 8, 8, 8);

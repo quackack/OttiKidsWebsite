@@ -1,0 +1,13 @@
+.problemPages, .solutionPages {
+	clear: both;
+	padding: 20px;
+}
+
+.WorksheetPage {
+	text-align: center;
+	max-width: 100%;
+}
+
+@media print {
+  .problemPages, .problemPages {page-break-after: always; page-break-after: always;}
+}
