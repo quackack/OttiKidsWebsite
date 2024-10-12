@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="<!--depth-->/pictures/StemForestLogo.ico" />
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="./game.css">
+    <title>Choose Numbers - Stem Forest Books</title>
+  </head>
+  <body>
+	<!--{header.html}-->
+    <h1>Choose numbers</h1>
+	<div id="gameContent">
+	</div>
+
+	<script>
+	
+	const gameHTML = document.getElementById("gameContent");
+	
+	function getRandomPoint(distribution) {
+		var intervalChoice = Math.random();
+		var interval;
+		for (var i = 0; i < distribution.length; i++) {
+			var thisInterval = distribution[i];
+			intervalChoice -= thisInterval[0];
+			if (intervalChoice <= 0) {
+				 interval = thisInterval[1];
+				 break;
+			}
+		}
+		return Math.floor(interval[0] + Math.random()*(interval[1] - interval[0]));
+	}
+	
+	function getRandomPoints(n , distribution) {
+		var points = new Set();
+		while (points.size < n) {
+			var newPoint = getRandomPoint(distribution);
+			points.add(newPoint);
+		}
+		
+		return [...points].sort(function (a,b) {return a - b});
+	}
+	
+	var lowDistribution = [[0.2, [0,50]], [0.2, [50, 200]], [0.2, [200, 1000]], [0.2, [1000, 4000]], [0.2, [4000, 10000] ]];
+	var midDistribution = [[0.2, [0,3200]], [0.2, [3200, 4800]], [0.2, [4800, 5200]], [0.2, [5200, 6800]], [0.2, [6800, 10000] ]];
+	
+	var trimodalDistribution = [[0.25, [0,100]], [0.1, [100, 400]], [0.3, [400, 600]], [0.1, [600, 9000]], [0.25, [9000, 10000] ]];
+	
+	var points = getRandomPoints(120, trimodalDistribution);
+	var output = "";
+	for(let point of points) {
+		output+= point + "\n";
+	}
+	console.log(output);
+	
+	</script> 
+	
+	<!--{footer.html}-->
+  </body>
+</html>
