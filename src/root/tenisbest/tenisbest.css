@@ -1,0 +1,12 @@
+/**
+ * Change Color
+ */
+
+#Header {
+  background-color: #c3dbbc;
+  background: linear-gradient(to bottom, #c3ffbc, #40a040);
+}
+#Body {
+  background-color: #a0e0c;
+  background: linear-gradient(to bottom, #c0e0ff, #a0a0c0);
+}

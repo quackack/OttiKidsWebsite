@@ -37,3 +37,16 @@
 .rightpage {
 	margin-left: 0;
 }
+
+.papertext {
+  width: 80%;
+  margin: 10%;
+  background-color: #fff0d0;
+  padding: 30px;
+  min-height: 600px;
+  overflow: auto;
+}
+
+.papertext p {
+	text-align: left;
+}
