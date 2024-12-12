@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" href="<!--depth-->/pictures/StemForestLogo.ico" />
+    <link rel="stylesheet" href="../index.css">
+    <link rel="stylesheet" href="./game.css">
+    <title>Code Games - Stem Forest Books</title>
+  </head>
+  <body>
+	<!--{header.html}-->
+    <h1>Code Games</h1>
+	
+	<p>This game is about error correcting codes. This has two modes.</p>
+	
+	<ul>
+		<li>In Parity code mode, we start with a codeword that has an even number of ones (or a number whose entries sum to something divisible by ten, etc). Then a symbol is deleted and the player must find the deleted symbol.</li>
+		<li>Custom code is a two player mode. One player is the encoder and the other is the decoder. The encoder is first given a random message, and is asked to encode it. Then that encoding is given to the decoder and they must decode it. They succeed if they output the message. We then rate the result by the rate, which is the message length divided by the codeword length.</li>
+	</ul>
+	
+	
+	<p> Enter Game Mode: 
+	<select name="mode" id="mode" onclick="toggleGameMode()">
+	  <option value="parity">Parity Code</option>
+	  <option value="custom">Custom Code</option>
+	</select></p>
+	
+	<p>What kinds of symbols will you use?
+	<select name="alphabet" id="alphabet">
+	  <option value="binary">One and Zero</option>
+	  <option value="decimal">Numbers</option>
+	  <option value="alphanumeric">Numbers and Letters</option>
+	</select>
+	</p>
+	<p>How many symbols will be in your message? <input type="number" id="messageLength" min="1" max="64" value="2"></p>
+	<p id ="EraseContainer" style="display: none">How many symbols will we erase? <input type="number" id="eraseCount" min="1" max="64" value="2"></p>
+	
+	<p><button type="button" onclick="makeNewGame()">New Game</button> </p>
+	
+	<h2>Game</h2>
+	<div id="gameContent">
+	</div>
+
+	<script src="codegames.js"></script> 
+	
+	<!--{footer.html}-->
+  </body>
+</html>
